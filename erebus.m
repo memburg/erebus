@@ -5,10 +5,12 @@ close all;
 % Default is zero since it cannot be chosen.
 DEFAULT_GPU_DEVICE = 0;
 
+% This will select the last GPU device
+% available from the list of available
+% devices.
 if gpuDeviceCount("available") > 0
-    % This will select the last GPU device
-    % available from the list of available
-    % devices.
+    % By getting the amount of available device
+    % we can set
     DEFAULT_GPU_DEVICE = gpuDeviceCount("available");
     gpuDevice(DEFAULT_GPU_DEVICE);
 
@@ -23,3 +25,5 @@ else
     % case there's no GPU device available.
     gpuDevice(DEFAULT_GPU_DEVICE);
 end
+
+% TODO: Image setup
