@@ -2,6 +2,9 @@ clc;
 clear;
 close all;
 
+% Import 'src' folder into the main script.
+addpath(pwd + "\\src");
+
 % Default is zero since it cannot be chosen.
 DEFAULT_GPU_DEVICE = 0;
 
@@ -19,11 +22,12 @@ if gpuDeviceCount("available") > 0
     GPU_NAME = GPU_PROPS(DEFAULT_GPU_DEVICE, 2).Name;
 
     % Display GPU name
-    disp('Selected device: ' + GPU_NAME);
+    disp("Selected device: " + GPU_NAME);
 else
     % This will cause the program to fail in
-    % case there's no GPU device available.
+    % case there"s no GPU device available.
     gpuDevice(DEFAULT_GPU_DEVICE);
 end
 
 % TODO: Image setup
+originalImage = imread("./sample/lenna.png");
