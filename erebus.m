@@ -3,8 +3,7 @@ clear;
 close all;
 
 % Import 'src' folder into the main script.
-addpath(pwd + "\\src");
-speak("Hi");
+addpath(pwd + "/src");
 
 % Default is zero since it cannot be chosen.
 DEFAULT_GPU_DEVICE = 0;
@@ -30,5 +29,18 @@ else
     gpuDevice(DEFAULT_GPU_DEVICE);
 end
 
-% TODO: Image setup
+% Create an image in the traditional way.
 originalImage = imread("./sample/lenna.png");
+
+% Send the image to the GPU
+gpuImage = gpuArray(originalImage);
+
+%{
+    TODO: Image processing (cypher)
+    Igray_gpu = arrayfun(@rgb2gray_custom, Igpu(:,:,1), Igpu(:,:,2), Igpu(:,:,3));
+%}
+
+% Bring back the image from the GPU
+postProscessing = gather(gpuImage);
+
+Cypher.greet();
