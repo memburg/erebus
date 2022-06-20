@@ -43,4 +43,4 @@ gpuImage = gpuArray(originalImage);
 % Bring back the image from the GPU
 postProscessing = gather(gpuImage);
 
-Cypher.greet();
+Cypher.protectMe(gpuImage);

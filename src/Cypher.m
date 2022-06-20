@@ -1,7 +1,7 @@
 classdef Cypher
     methods (Static)
-        function greet()
-            disp("Hello from a static method!");
+        function protectMe(gpuImage)
+            disp(size(gpuImage));
         end
     end
 end
