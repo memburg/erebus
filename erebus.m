@@ -29,8 +29,13 @@ else
     gpuDevice(DEFAULT_GPU_DEVICE);
 end
 
+% Read JSON properties (input and output files)
+jsonConfig = jsondecode(fileread("./config.json"));
+inputPath = getfield(jsonConfig, "input");
+outPath = getfield(jsonConfig, "output");
+
 % Create an image in the traditional way.
-originalImage = imread("./sample/lenna.png");
+originalImage = imread(inputPath);
 
 % Send the image to the GPU
 gpuImage = gpuArray(originalImage);
