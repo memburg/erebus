@@ -6,6 +6,6 @@ Erebus is a work to help you share content on the internet and preserve your pri
 
 Since Erebus is still under development, only Windows is supported; MAC and Linux will eventually be able to run this.
 
-====Windows===
+====Windows====
 
 <pre>./erebus</pre>
