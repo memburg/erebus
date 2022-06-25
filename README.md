@@ -20,3 +20,7 @@ Run the following command from the command line:
 | **Lenna (Original)**            | **Lenna (Encrypted, I = 1000)** |
 |:-------------------------------:|:-------------------------------:|
 | ![](./docs/resources/lenna.png) | ![](./docs/resources/lenna.png) |
+
+## Documentation in different languages
+
+- Spanish

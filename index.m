@@ -31,21 +31,17 @@ end
 
 % Read JSON properties (input and output files)
 jsonConfig = jsondecode(fileread("./config.json"));
-inputPath = getfield(jsonConfig, "input");
-outPath = getfield(jsonConfig, "output");
+inputPath = jsonConfig.("input");
+outPath = jsonConfig.("output");
+iterations = jsonConfig.("iterations");
 
 % Create an image in the traditional way.
-originalImage = imread(inputPath);
-
-% Send the image to the GPU
-gpuImage = gpuArray(originalImage);
+imageCPU = imread(inputPath);
+Erebus.protect();
 
 %{
     TODO: Image processing (cypher)
+    gpuImage = gpuArray(original);
     Igray_gpu = arrayfun(@rgb2gray_custom, Igpu(:,:,1), Igpu(:,:,2), Igpu(:,:,3));
+    protectedCPU = gather(gpuImage);
 %}
-
-% Bring back the image from the GPU
-postProscessing = gather(gpuImage);
-
-Cypher.protectMe(gpuImage);

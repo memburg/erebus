@@ -7,5 +7,5 @@
 ::    from the terminal.
 :: 3. Finally execute the MATLAB command.
 @echo off
-echo { ^"input^": ^"%1^", ^"output^": ^"%2^" } > ./config.json
-matlab -batch "erebus; exit"
+echo { ^"input^": ^"%1^", ^"output^": ^"%2^", ^"iterations^": %3 } > ./config.json
+matlab -batch "index; exit"

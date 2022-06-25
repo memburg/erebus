@@ -16,6 +16,6 @@ Run the following command from the command line:
 
 ## Results
 
-| **Lenna (Original)**       | **Lenna (Encrypted, I = 1000)** |
-|:--------------------------:|:-------------------------------:|
-| ![](./resources/lenna.png) | ![](./resources/lenna.png)      |
+| **Lenna (Original)**       | **Lenna (Encriptada, I = 1000)** |
+|:--------------------------:|:--------------------------------:|
+| ![](./resources/lenna.png) | ![](./resources/lenna.png)       |
