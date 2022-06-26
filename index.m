@@ -32,12 +32,11 @@ end
 % Read JSON properties (input and output files)
 jsonConfig = jsondecode(fileread("./config.json"));
 inputPath = jsonConfig.("input");
-outPath = jsonConfig.("output");
 iterations = jsonConfig.("iterations");
 
 % Create an image in the traditional way.
 imageCPU = imread(inputPath);
-Erebus.protect();
+Erebus.protect(imageCPU, iterations);
 
 %{
     TODO: Image processing (cypher)

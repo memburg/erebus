@@ -1,4 +1,8 @@
 classdef Erebus
+    properties (Constant, Access = private)
+        OUTPUT_PATH = "./outputs/" + datestr(now,'yy_mm_dd_HH_MM_SS');
+    end
+
     methods (Static, Access = private)
         function createKey(x, y, iterations)
             % Create a Mx3 matrix, full of zeros.
@@ -28,16 +32,17 @@ classdef Erebus
                 end
             end
 
-            date = datestr(now,'yy_mm_dd_HH_MM_SS');
-            writematrix(key, "./outputs/" + date + ".csv");
+            writematrix(key, Erebus.OUTPUT_PATH + ".csv");
         end
     end
 
     methods (Static)
-        function protect()
-            tic;
-            Erebus.createKey(2, 100, 800);
-            toc;
+        function protect(I, iterations)
+            % Get image size, it will be returned
+            % in a 1x3 matrix.
+            imageSize = size(I);
+
+            Erebus.createKey(imageSize(1), imageSize(2), iterations);
         end
     end
 end
