@@ -11,7 +11,7 @@ Since Erebus is still under development, only Windows is supported; MAC and Linu
 Run the following command from the command line:
 
 ```batch
-./erebus [input/path/_.png] [output/path/_.png]
+./erebus <input/path/_.png> <iterations>
 ```
 
 ## Results

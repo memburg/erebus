@@ -16,7 +16,7 @@ GPU.configureGPU();
 
 % Create an image in the traditional way.
 imageCPU = imread(args.inputFile);
-Erebus.protect(args.iterations);
+Erebus.protect(imageCPU, args.iterations);
 
 %{
     TODO: Image processing (cypher)

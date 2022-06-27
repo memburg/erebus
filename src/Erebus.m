@@ -1,6 +1,7 @@
 classdef Erebus
     properties (Constant, Access = private)
-        OUTPUT_PATH = "./outputs/" + datestr(now,'yy_mm_dd_HH_MM_SS');
+        OUTPUT_PATH = "./outputs/";
+        FILE_PREFIX = Erebus.OUTPUT_PATH + datestr(now,'yy_mm_dd_HH_MM_SS');
     end
 
     methods (Static, Access = private)
@@ -32,7 +33,7 @@ classdef Erebus
                 end
             end
 
-            writematrix(key, Erebus.OUTPUT_PATH + ".csv");
+            writematrix(key, Erebus.FILE_PREFIX + ".csv");
         end
     end
 
