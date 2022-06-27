@@ -42,7 +42,11 @@ classdef Erebus
             % in a 1x3 matrix.
             imageSize = size(I);
 
+            disp("Generating encryption key...");
+
+            tic;
             Erebus.createKey(imageSize(1), imageSize(2), iterations);
+            toc;
         end
     end
 end

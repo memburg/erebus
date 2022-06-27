@@ -8,7 +8,7 @@
 :: 3. Execute the MATLAB command.
 :: 4. Delete 'config.json' file.
 @echo off
-echo { ^"input^": ^"%1^", ^"iterations^": %2 } > ./config.json
+echo { ^"inputFile^": ^"%1^", ^"iterations^": %2 } > ./config.json
 mkdir outputs
 matlab -batch "index; exit"
 del config.json
