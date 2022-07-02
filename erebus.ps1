@@ -15,6 +15,6 @@ param(
 # 4. Delete 'config.json' file.
 New-Item ./config.json | Out-Null
 Set-Content ./config.json "{ `"inputFile`": `"$i`", `"iterations`": $its }"
+New-Item -ItemType Directory -Force -Path ./outputs | Out-Null
 matlab -batch "index; exit"
 Remove-Item ./config.json
-New-Item -ItemType Directory -Force -Path ./outputs | Out-Null

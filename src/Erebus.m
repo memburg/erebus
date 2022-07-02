@@ -14,18 +14,21 @@ classdef Erebus
             % represents a column.
             key(:, 1) = randi([0 1], iterations, 1);
 
-            % 0 - rows
-            % 1 - columns
+            % In case the line type is 0, it will
+            % be considered as a row, in case it 
+            % is 1, it'll be considered a column;
+            % also explained in previous comment
+            % block.
             for i = 1:iterations
                 switch key(i, 1)
                     case 0
-                        randRow = randi([1 x], iterations, 1);
-                        randMvmts = randi([-x x], iterations, 1);
+                        randRow = randi([1 y], iterations, 1);
+                        randMvmts = randi([-y y], iterations, 1);
                         key(i, 2) = randRow(1, 1);
                         key(i, 3) = randMvmts(1, 1);
                     case 1
-                        randColumn = randi([1 y], iterations, 1);
-                        randMvmts = randi([-y y], iterations, 1);
+                        randColumn = randi([1 x], iterations, 1);
+                        randMvmts = randi([-x x], iterations, 1);
                         key(i, 2) = randColumn(1, 1);
                         key(i, 3) = randMvmts(1, 1);
                     otherwise
@@ -34,6 +37,12 @@ classdef Erebus
             end
 
             writematrix(key, Erebus.FILE_PREFIX + ".csv");
+        end
+
+        function encryptedImage = encrypt(rawImage)
+            encryptionKey = readmatrix(Erebus.FILE_PREFIX + ".csv");
+            encryptedImage = rawImage;
+            imwrite(encryptedImage, Erebus.FILE_PREFIX + ".png");
         end
     end
 
@@ -47,6 +56,12 @@ classdef Erebus
 
             tic;
             Erebus.createKey(imageSize(1), imageSize(2), iterations);
+            toc;
+
+            disp("Encrypting image...");
+
+            tic;
+            Erebus.encrypt(I);
             toc;
         end
     end
