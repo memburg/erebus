@@ -10,17 +10,17 @@ Since Erebus is still under development, only Windows is supported; MAC and Linu
 
 Run the following command from the command line:
 
-```batch
-./erebus <input/path/_.png> <iterations>
+```
+./erebus -i <input_image> -its <number_of_iterations>
 ```
 
 ## Results
 
 
-| **Lenna (Original)**            | **Lenna (Encrypted, I = 1000)** |
-|:-------------------------------:|:-------------------------------:|
-| ![](./docs/resources/lenna.png) | ![](./docs/resources/lenna.png) |
+| **Lenna (Original)**                 | **Lenna (Encrypted, I = 1000)**      | **Lenna (Encrypted, I = 2000)**      | **Lenna (Encrypted, I = 5000)**      |
+|:------------------------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|
+| ![](./docs/resources/lenna.png)      | ![](./docs/resources/lenna_1000.png) | ![](./docs/resources/lenna_2000.png) | ![](./docs/resources/lenna_5000.png) |
 
-## Documentation in different languages
+## Documentation in different languages 🚧
 
-TODO
+This section is still under construction and it's gonna be released soon.
