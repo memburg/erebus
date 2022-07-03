@@ -17,9 +17,9 @@ Run the following command from the command line:
 ## Results
 
 
-| **Lenna (Original)**                 | **Lenna (Encrypted, I = 1000)**      | **Lenna (Encrypted, I = 2000)**      | **Lenna (Encrypted, I = 5000)**      |
-|:------------------------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|
-| ![](./docs/resources/lenna.png)      | ![](./docs/resources/lenna_1000.png) | ![](./docs/resources/lenna_2000.png) | ![](./docs/resources/lenna_5000.png) |
+| **Original**                    | **Encrypted (I = 1000)**             | **Encrypted (I = 2000)**             | **Encrypted (I = 5000)**             |
+|:-------------------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|
+| ![](./docs/resources/lenna.png) | ![](./docs/resources/lenna_1000.png) | ![](./docs/resources/lenna_2000.png) | ![](./docs/resources/lenna_5000.png) |
 
 ## Documentation in different languages 🚧
 
