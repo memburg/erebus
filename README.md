@@ -4,7 +4,7 @@ Erebus is a work to help you share content on the internet and preserve your pri
 
 # How it works?
 
-| ![](./docs/resources/lenna.gif) | This is an example of an encrypted 100x100 image; this is basically what happens behind the scenes, notice how the rows and columns are randomly modified. |
+| ![](./docs/resources/lenna.gif) | This is an example of an encrypted 100x100 image; this is basically what happens behind the scenes. |
 |---------------------------------|-------------------------------------------------------------------------------------------------|
 
 ## How to run?
