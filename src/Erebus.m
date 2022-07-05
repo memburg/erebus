@@ -56,8 +56,6 @@ classdef Erebus
                         error("Unexpeceted error while encrypting the image");
                 end
             end
-
-            imwrite(encryptedImage, Erebus.OUTPUT_PATH + "E" + Erebus.FILE_PREFIX + ".png");
         end
     end
 
@@ -76,8 +74,10 @@ classdef Erebus
             disp("Encrypting image...");
 
             tic;
-            Erebus.encrypt(I);
+            encryptedImage = Erebus.encrypt(I);
             toc;
+
+            imwrite(encryptedImage, Erebus.OUTPUT_PATH + "E" + Erebus.FILE_PREFIX + ".png");
         end
     end
 end

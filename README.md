@@ -4,8 +4,9 @@ Erebus is a work to help you share content on the internet and preserve your pri
 
 ## How it works?
 
-| ![](./docs/resources/lenna.gif) | This is an example of an encrypted 100x100 image; this is basically what happens behind the scenes. |
-|---------------------------------|-------------------------------------------------------------------------------------------------|
+<video autoplay>
+     <source src="./resources/lenna.mp4" type="video/mp4">
+</video>
 
 ## How to run?
 
