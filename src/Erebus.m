@@ -1,7 +1,7 @@
 classdef Erebus
     properties (Constant, Access = private)
         OUTPUT_PATH = "./outputs/";
-        FILE_PREFIX = datestr(now,'yymmddHHMMSS');
+        FILE_PREFIX = datestr(now, 'yymmddHHMMSS');
     end
 
     methods (Static, Access = private)
