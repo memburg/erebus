@@ -6,7 +6,7 @@ Erebus is a work to help you share content on the internet and preserve your pri
 
 | ![](./docs/resources/lenna.gif)                                                                          |
 |:--------------------------------------------------------------------------------------------------------:|
-| Lenna or Lena is a standard test image used in the field of image processing since 1973. |
+| [1] Lenna or Lena is a standard test image used in the field of image processing since 1973. It is a picture of the Swedish model Lena Forsén, shot by photographer Dwight Hooker, cropped from the centerfold of the November 1972 issue of Playboy magazine. In this example we can see what happens behind the scenes during the encryption process. |
 
 ## How to run?
 
@@ -39,4 +39,4 @@ This section is still under construction and it's gonna be released soon.
 
 ## External links
 
-1. [Lena (Wikipedia)](https://en.wikipedia.org/wiki/Lenna)
+1. [Lenna (Wikipedia)](https://en.wikipedia.org/wiki/Lenna)
