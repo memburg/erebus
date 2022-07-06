@@ -1,7 +1,9 @@
 param(
     [Parameter()]
-    [String]$i,
-    [String]$its
+    [String]$action,
+    [String]$inputFile,
+    [String]$iterations,
+    [String]$keyPath
 )
 
 # STEPS:
@@ -13,8 +15,24 @@ param(
 #    from the terminal.
 # 3. Execute the MATLAB command.
 # 4. Delete 'config.json' file.
-New-Item ./config.json | Out-Null
-Set-Content ./config.json "{ `"inputFile`": `"$i`", `"iterations`": $its }"
-New-Item -ItemType Directory -Force -Path ./outputs | Out-Null
-matlab -batch "index; exit"
-Remove-Item ./config.json
+
+if ($action -eq "protect")
+{
+    New-Item ./config.json | Out-Null
+    Set-Content ./config.json "{ `"action`": `"$action`", `"inputFile`": `"$inputFile`", `"iterations`": $iterations }"
+    New-Item -ItemType Directory -Force -Path ./outputs | Out-Null
+    matlab -batch "index; exit"
+    Remove-Item ./config.json
+}
+elseif ($action -eq "unprotect")
+{
+    New-Item ./config.json | Out-Null
+    Set-Content ./config.json "{ `"action`": `"$action`", `"inputFile`": `"$inputFile`", `"keyPath`": `"$keyPath`" }"
+    New-Item -ItemType Directory -Force -Path ./outputs | Out-Null
+    matlab -batch "index; exit"
+    Remove-Item ./config.json
+}
+else
+{
+    Write-Output "Unknown action: $action"
+}
