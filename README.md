@@ -6,7 +6,7 @@ Erebus is a work to help you share content on the internet and preserve your pri
 
 | ![](./docs/resources/lenna.gif)                                                                          |
 |:--------------------------------------------------------------------------------------------------------:|
-| This is an example of a 500x500 image being encrypted; this is basically what happens behind the scenes. |
+| Lenna or Lena is a standard test image used in the field of image processing since 1973. |
 
 ## How to run?
 
@@ -14,10 +14,16 @@ Since Erebus is still under development, only Windows is supported; MAC and Linu
 
 ### Windows
 
-Run the following command from the command line:
+To encrypt an image you can run the following command:
 
 ```
-./erebus -i <input_image> -its <number_of_iterations>
+./erebus -action protect -inputFile ./input/path/example.png -iterations 1000
+```
+
+To decrypt an image you can run the following command:
+
+```
+./erebus -action unprotect -inputFile ./input/path/example.png -keyPath ./key/path/example.csv
 ```
 
 ## Results
@@ -30,3 +36,7 @@ Run the following command from the command line:
 ## Documentation in different languages 🚧
 
 This section is still under construction and it's gonna be released soon.
+
+## External links
+
+1. [Lena (Wikipedia)](https://en.wikipedia.org/wiki/Lenna)
