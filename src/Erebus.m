@@ -57,6 +57,25 @@ classdef Erebus
                 end
             end
         end
+
+        function decryptedImage = decrypt(encryptedImage, encryptionKey)
+            decryptedImage = encryptedImage;
+
+            for i = size(encryptionKey, 1):-1:1
+                switch encryptionKey(i, 1)
+                    case 0
+                        %fprintf("Flipping row %d\n", encryptionKey(i, 2));
+                        flipped = flip(decryptedImage(encryptionKey(i, 2), :, :));
+                        decryptedImage(encryptionKey(i, 2), :, :) = flipped;
+                    case 1
+                        %fprintf("Flipping column %d\n", encryptionKey(i, 2));
+                        flipped = flip(decryptedImage(:, encryptionKey(i, 2), :));
+                        decryptedImage(:, encryptionKey(i, 2), :) = flipped;
+                    otherwise
+                        error("Unexpeceted error while decrypting the image");
+                end
+            end
+        end
     end
 
     methods (Static)
@@ -78,6 +97,16 @@ classdef Erebus
             toc;
 
             imwrite(encryptedImage, Erebus.OUTPUT_PATH + "E" + Erebus.FILE_PREFIX + ".png");
+        end
+
+        function unprotect(I, k)
+            disp("Decrypting image...");
+
+            tic;
+            decryptedImage = Erebus.decrypt(I, k);
+            toc;
+
+            imwrite(decryptedImage, Erebus.OUTPUT_PATH + "D" + Erebus.FILE_PREFIX + ".png");
         end
     end
 end
