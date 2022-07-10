@@ -4,6 +4,10 @@ Erebus is a work to help you share content on the internet and preserve your pri
 
 ## How it works?
 
+The algorithm is very simple, basically the rows and columns of the image are flipped (randomly). A key is created in CSV format, and from there, the rows and/or columns that were randomly selected are flipped. The number of moves is decided by the user.
+
+It is planned to improve the algorithm in a future release.
+
 | ![](./docs/resources/lenna.gif)                                                                          |
 |:--------------------------------------------------------------------------------------------------------:|
 | [1] Lenna or Lena is a standard test image used in the field of image processing since 1973. It is a picture of the Swedish model Lena Forsén, shot by photographer Dwight Hooker, cropped from the centerfold of the November 1972 issue of Playboy magazine. In this example we can see what happens behind the scenes during the encryption process. |
@@ -34,14 +38,18 @@ Here are some comparisons of the same image being encrypted with a different num
 |:-------------------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|
 | ![](./docs/resources/lenna.png) | ![](./docs/resources/lenna_1000.png) | ![](./docs/resources/lenna_2000.png) | ![](./docs/resources/lenna_5000.png) |
 
-Here the execution times are shown, both the generation of the key, as well as those of the encryption and decryption processes; for an image with a dimension of 640x350 (frame taken from the movie Like Minds).
+Here the execution times are shown, both the generation of the key, as well as those of the encryption (3960 iterations) and decryption processes; for an image with a dimension of 640x350 (frame taken from the movie Like Minds).
 
 | **Original**                         | **Encryption Key** | **Encrypted Image**                       | **Decrypted Image**                  |
 |:------------------------------------:|:------------------:|:-----------------------------------------:|:------------------------------------:|
 | ![](./docs/resources/like_minds.jpg) | NA                 | ![](./docs/resources/like_minds_3960.png) | ![](./docs/resources/like_minds.jpg) |
 | NA                                   | 0.692811 seconds   | 1.623960 seconds                          | 0.024757 seconds                     |
 
-## Documentation in different languages 🚧
+## Video encryption & GPU Implementation ⌛
+
+This will come in a future release.
+
+## Documentation in Different Languages 🚧
 
 This section is still under construction and it's gonna be released soon.
 
