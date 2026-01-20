@@ -40,7 +40,7 @@ def load_image_tk(image_path: str) -> LoadedImage:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="隠れる (kakureru) sequence generator")
+    parser = argparse.ArgumentParser(description="Erebus sequence generator")
     parser.add_argument("image_path", type=Path, help="Path to the image")
     parser.add_argument("seed", type=int, help="Random seed")
     parser.add_argument("iterations", type=int, help="Number of steps to generate")
@@ -145,7 +145,7 @@ def move_column(im: LoadedImage, direction: Direction, pivot: int, moves: int):
 
 def main() -> None:
     args = parse_args()
-    print("隠れる (kakureru)")
+    print("EREBUS")
     print(f"Key: {args.seed}")
     print(f"Number of iterations: {args.iterations}")
 
@@ -171,7 +171,7 @@ def main() -> None:
                 raise ValueError(f"Unsupported direction: {step.direction}")
 
         # Save output image next to input
-        out_path = args.image_path.with_name(args.image_path.stem + "_kakureru.png")
+        out_path = args.image_path.with_name(args.image_path.stem + "_erebus.png")
         try:
             loaded.image.write(str(out_path), format="png")
             print(f"Wrote output to: {out_path}")
