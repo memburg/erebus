@@ -1,4 +1,5 @@
 import sys
+import time
 import random
 import argparse
 import tkinter as tk
@@ -170,8 +171,10 @@ def main() -> None:
             else:
                 raise ValueError(f"Unsupported direction: {step.direction}")
 
-        # Save output image next to input
-        out_path = args.image_path.with_name(args.image_path.stem + "_erebus.png")
+        # Save output image next to input with epoch-based timestamp
+        timestamp = int(time.time() * 1000)
+        out_filename = f"{args.image_path.stem}_{timestamp}.png"
+        out_path = args.image_path.with_name(out_filename)
         try:
             loaded.image.write(str(out_path), format="png")
             print(f"Wrote output to: {out_path}")
