@@ -47,6 +47,7 @@ echo
 
 times=()
 TIMEFORMAT=%R
+
 for ((i=1; i<=runs; i++)); do
   t=$( { time "${cmd[@]}" >/dev/null; } 2>&1 )
   times+=("$t")

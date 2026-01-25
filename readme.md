@@ -10,7 +10,11 @@ Erebus is an experiment in pixel permutation using only simple wrap-around shift
 
 ## Iterations
 
+### 1w or 1h
 
+| Original               | 1w or 1h                             | 1w + 1h                              | 2w + 1h                              | 2w + 2h                              |
+|:----------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|
+|![](./assets/female.png)|![](./assets/female_1769319510051.png)|![](./assets/female_1769319510051.png)|![](./assets/female_1769319510051.png)|![](./assets/female_1769319510051.png)|
 
 ## Performance
 
@@ -18,35 +22,35 @@ Performance depends on CPU, memory bandwidth, and Python/Tk build, so times vary
 
 ### 1w or 1h
 
-| Image        | Size      | Iterations | Time (seconds) |
-| ------------ | --------- | ---------- | -------------- |
-| female.png   | 256x256   | 256        | 0.266100       |
-| mandrill.png | 512x512   | 512        | 0.633300       |
-| male.png     | 1024x1024 | 1024       | 2.158500       |
+| Image        | Size      | Iterations | Encryption time | Decryption time |
+| ------------ | --------- | ---------- | --------------- | --------------- |
+| female.png   | 256x256   | 256        | 0.266100        | TBD             |
+| mandrill.png | 512x512   | 512        | 0.633300        | TBD             |
+| male.png     | 1024x1024 | 1024       | 2.158500        | TBD             |
 
 ### 1w + 1h
 
-| Image        | Size      | Iterations | Time (seconds) |
-| ------------ | --------- | ---------- | -------------- |
-| female.png   | 256x256   | 512        | 0.384200       |
-| mandrill.png | 512x512   | 1024       | 1.100400       |
-| male.png     | 1024x1024 | 2048       | 4.071000       |
+| Image        | Size      | Iterations | Encryption time | Decryption time |
+| ------------ | --------- | ---------- | --------------- | --------------- |
+| female.png   | 256x256   | 512        | 0.384200        | TBD             |
+| mandrill.png | 512x512   | 1024       | 1.100400        | TBD             |
+| male.png     | 1024x1024 | 2048       | 4.071000        | TBD             |
 
 ### 2w + 1h
 
-| Image        | Size      | Iterations | Time (seconds) |
-| ------------ | --------- | ---------- | -------------- |
-| female.png   | 256x256   | 768        | 0.500800       |
-| mandrill.png | 512x512   | 1536       | 1.580900       |
-| male.png     | 1024x1024 | 3072       | 6.010700       |
+| Image        | Size      | Iterations | Encryption time | Decryption time |
+| ------------ | --------- | ---------- | --------------- | --------------- |
+| female.png   | 256x256   | 768        | 0.500800        | TBD             |
+| mandrill.png | 512x512   | 1536       | 1.580900        | TBD             |
+| male.png     | 1024x1024 | 3072       | 6.010700        | TBD             |
 
 ### 2w + 2h
 
-| Image        | Size      | Iterations | Time (seconds) |
-| ------------ | --------- | ---------- | -------------- |
-| female.png   | 256x256   | 1024       | 0.616300       |
-| mandrill.png | 512x512   | 2048       | 2.084600       |
-| male.png     | 1024x1024 | 4096       | 8.044000       |
+| Image        | Size      | Iterations | Encryption time | Decryption time |
+| ------------ | --------- | ---------- | --------------- | --------------- |
+| female.png   | 256x256   | 1024       | 0.616300        | TBD             |
+| mandrill.png | 512x512   | 2048       | 2.084600        | TBD             |
+| male.png     | 1024x1024 | 4096       | 8.044000        | TBD             |
 
 ### System specs
 
@@ -65,13 +69,15 @@ Memory: 2270MiB / 16384MiB
 ### qwen3-vl
 ### gemma3
 
+## Conclusion
+
 ## Usage
 
-- Requirements: Python 3.9+ with Tkinter (PhotoImage). Verify with `python -c "import tkinter; print('ok')"`.
-- CLI: `python src/erebus.py <image_path> <seed> <iterations>`
-- Example: `python src/erebus.py assets/lenna.png 42 1500`
+- Requirements: Python 3.9+ with Tkinter (PhotoImage). Verify with `python3 -c "import tkinter; print('ok')"`.
+- CLI: `python3 src/erebus.py <image_path> <seed> <iterations>`
+- Example: `python3 src/erebus.py assets/lenna.png 42 1500`
 - Output: writes `<image_stem>_<epoch_ms>.png` next to the input image
-- Help: `python src/erebus.py -h`
+- Help: `python3 src/erebus.py -h`
 
 Notes:
 - Only pixel positions change; running with the same seed and iterations reproduces the same arrangement for a given image size.
