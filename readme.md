@@ -10,11 +10,11 @@ Erebus is an experiment in pixel permutation using only simple wrap-around shift
 
 ## Iterations
 
-### 1w or 1h
+### female.png
 
 | Original               | 1w or 1h                             | 1w + 1h                              | 2w + 1h                              | 2w + 2h                              |
 |:----------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|
-|![](./assets/female.png)|![](./assets/female_1769319510051.png)|![](./assets/female_1769319510051.png)|![](./assets/female_1769319510051.png)|![](./assets/female_1769319510051.png)|
+|![](./assets/female.png)|![](./assets/female_1769320125726.png)|![](./assets/female_1769320156351.png)|![](./assets/female_1769320208146.png)|![](./assets/female_1769320262424.png)|
 
 ## Performance
 
