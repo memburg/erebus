@@ -22,6 +22,12 @@ Erebus is an experiment in pixel permutation using only simple wrap-around shift
 |:------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|
 |![](./assets/mandrill.png)|![](./assets/mandrill_1769320504480.png)|![](./assets/mandrill_1769320537310.png)|![](./assets/mandrill_1769320574215.png)|![](./assets/mandrill_1769320608998.png)|
 
+### male.png
+
+| Original             | 1w or 1h                           | 1w + 1h                            | 2w + 1h                            | 2w + 2h                            |
+|:--------------------:|:----------------------------------:|:----------------------------------:|:----------------------------------:|:----------------------------------:|
+|![](./assets/male.png)|![](./assets/male_1769320939908.png)|![](./assets/male_1769320971896.png)|![](./assets/male_1769320987771.png)|![](./assets/male_1769321003996.png)|
+
 ## Performance
 
 Performance depends on CPU, memory bandwidth, and Python/Tk build, so times vary by system; however, concrete numbers help set expectations. Each step rotates a single row or column, so runtime scales approximately with iterations × (width + height). The table below reports average timings from a reference system (specs included) as an indicative baseline; results on other systems may differ.
