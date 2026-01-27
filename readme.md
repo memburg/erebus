@@ -14,7 +14,21 @@ Erebus is a tiny, seed‑driven image scrambler. Given an input image, a random 
 
 ## Introduction
 
+Erebus derives from an older version called [erebus.m](https://github.com/memburg/erebus.m), a simpler version of Erebus written in MATLAB.
+
 Erebus is an experiment in pixel permutation using only simple wrap-around shifts. With a seed and a step count, it produces the same shuffled arrangement every run while never altering any color values. Because only positions change, structure can reappear with appropriate parameters, and an exact inverse exists in principle. It is useful for reproducible art, pedagogy around permutations, and lightweight obfuscation—though it is not cryptographic security.
+
+## Usage
+
+- Requirements: Python 3.9+ with Tkinter (PhotoImage). Verify with `python3 -c "import tkinter; print('ok')"`.
+- CLI: `python3 src/erebus.py <image_path> <seed> <iterations>`
+- Example: `python3 src/erebus.py assets/lenna.png 42 1500`
+- Output: writes `<image_stem>_<epoch_ms>.png` next to the input image
+- Help: `python3 src/erebus.py -h`
+
+Notes:
+- Only pixel positions change; running with the same seed and iterations reproduces the same arrangement for a given image size.
+- Tk PhotoImage natively supports PNG/GIF/PPM/PGM; convert other formats to PNG before use.
 
 ## Iterations
 
@@ -64,7 +78,7 @@ Performance depends on CPU, memory bandwidth, and Python/Tk build, so times vary
 | mandrill.png | 512x512   | 1536       | 1.580900        | TBD             |
 | male.png     | 1024x1024 | 3072       | 6.010700        | TBD             |
 
-### 2w + 2h
+### 2w + 2h (perimeter)
 
 | Image        | Size      | Iterations | Encryption time | Decryption time |
 | ------------ | --------- | ---------- | --------------- | --------------- |
@@ -90,18 +104,6 @@ Memory: 2270MiB / 16384MiB
 ### gemma3
 
 ## Conclusion
-
-## Usage
-
-- Requirements: Python 3.9+ with Tkinter (PhotoImage). Verify with `python3 -c "import tkinter; print('ok')"`.
-- CLI: `python3 src/erebus.py <image_path> <seed> <iterations>`
-- Example: `python3 src/erebus.py assets/lenna.png 42 1500`
-- Output: writes `<image_stem>_<epoch_ms>.png` next to the input image
-- Help: `python3 src/erebus.py -h`
-
-Notes:
-- Only pixel positions change; running with the same seed and iterations reproduces the same arrangement for a given image size.
-- Tk PhotoImage natively supports PNG/GIF/PPM/PGM; convert other formats to PNG before use.
 
 ## References
 
