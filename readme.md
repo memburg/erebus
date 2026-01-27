@@ -1,7 +1,11 @@
 # Erebus
 
 <div align="center">
-    <img src="./assets/lenna.gif"/>
+
+|![](./assets/lenna.gif)|
+|:---------------------:|
+|Graphical representation of Erebus using Lenna as a sample image|
+
 </div>
 
 ## Abstract
