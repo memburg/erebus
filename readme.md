@@ -2,9 +2,9 @@
 
 <div align="center">
 
-|![](./assets/lenna.gif)|
-|:---------------------:|
-|Lenna or Lena is a standard test image used in the field of image processing since 1973. It is a picture of the Swedish model Lena Forsén, shot by photographer Dwight Hooker, cropped from the centerfold of the November 1972 issue of Playboy magazine. In this example we can see what happens behind the scenes during the encryption process.|
+|                                                                                                                                                               ![](./assets/lenna.gif)                                                                                                                                                               |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Lenna or Lena is a standard test image used in the field of image processing since 1973. It is a picture of the Swedish model Lena Forsén, shot by photographer Dwight Hooker, cropped from the centerfold of the November 1972 issue of Playboy magazine. In this example we can see what happens behind the scenes during the encryption process. |
 
 </div>
 
@@ -22,7 +22,7 @@ Erebus is an experiment in pixel permutation using only simple wrap-around shift
 
 - Requirements: Python 3.9+ with Tkinter (PhotoImage). Verify with `python3 -c "import tkinter; print('ok')"`.
 - CLI: `python3 src/erebus.py <image_path> <seed> <iterations>`
-- Example: `python3 src/erebus.py assets/lenna.png 42 1500`
+- Example: `python3 src/erebus.py assets/lenna.png 42 1500 -m=cipher`
 - Output: writes `<image_stem>_<epoch_ms>.png` next to the input image
 - Help: `python3 src/erebus.py -h`
 
@@ -36,21 +36,21 @@ These grids summarize the effect of increasing the step budget across images. It
  
 ### female.png
 
-| Original               | 1w or 1h                             | 1w + 1h                              | 2w + 1h                              | 2w + 2h                              |
-|:----------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|:------------------------------------:|
-|![](./assets/female.png)|![](./assets/female_1769320125726.png)|![](./assets/female_1769320156351.png)|![](./assets/female_1769320208146.png)|![](./assets/female_1769320262424.png)|
+|         Original         |                1w or 1h                |                1w + 1h                 |                2w + 1h                 |                2w + 2h                 |
+| :----------------------: | :------------------------------------: | :------------------------------------: | :------------------------------------: | :------------------------------------: |
+| ![](./assets/female.png) | ![](./assets/female_1769320125726.png) | ![](./assets/female_1769320156351.png) | ![](./assets/female_1769320208146.png) | ![](./assets/female_1769320262424.png) |
 
 ### mandrill.png
 
-| Original                 | 1w or 1h                               | 1w + 1h                                | 2w + 1h                                | 2w + 2h                                |
-|:------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|:--------------------------------------:|
-|![](./assets/mandrill.png)|![](./assets/mandrill_1769320504480.png)|![](./assets/mandrill_1769320537310.png)|![](./assets/mandrill_1769320574215.png)|![](./assets/mandrill_1769320608998.png)|
+|          Original          |                 1w or 1h                 |                 1w + 1h                  |                 2w + 1h                  |                 2w + 2h                  |
+| :------------------------: | :--------------------------------------: | :--------------------------------------: | :--------------------------------------: | :--------------------------------------: |
+| ![](./assets/mandrill.png) | ![](./assets/mandrill_1769320504480.png) | ![](./assets/mandrill_1769320537310.png) | ![](./assets/mandrill_1769320574215.png) | ![](./assets/mandrill_1769320608998.png) |
 
 ### male.png
 
-| Original             | 1w or 1h                           | 1w + 1h                            | 2w + 1h                            | 2w + 2h                            |
-|:--------------------:|:----------------------------------:|:----------------------------------:|:----------------------------------:|:----------------------------------:|
-|![](./assets/male.png)|![](./assets/male_1769320939908.png)|![](./assets/male_1769320971896.png)|![](./assets/male_1769320987771.png)|![](./assets/male_1769321003996.png)|
+|        Original        |               1w or 1h               |               1w + 1h                |               2w + 1h                |               2w + 2h                |
+| :--------------------: | :----------------------------------: | :----------------------------------: | :----------------------------------: | :----------------------------------: |
+| ![](./assets/male.png) | ![](./assets/male_1769320939908.png) | ![](./assets/male_1769320971896.png) | ![](./assets/male_1769320987771.png) | ![](./assets/male_1769321003996.png) |
 
 ## Performance
 
@@ -171,7 +171,7 @@ From a security standpoint, exhaustive search over plausible seeds and iteration
 
 Operationally, the method is lightweight and easy to use: a single command reproduces or inverts a transform on any supported image, and size-normalized iteration budgets facilitate comparable mixing across resolutions. This combination of determinism, reproducibility, and simplicity makes Erebus suitable for pedagogical demonstrations, procedurally generated art, and low-stakes obfuscation scenarios where cryptographic assurances are not required.
 
-## References
+## Credits
 
 1. [Lenna](https://en.wikipedia.org/wiki/Lenna)
 2. [SIPI Image Database](https://sipi.usc.edu/database/)

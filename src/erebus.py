@@ -1,5 +1,4 @@
 import sys
-import time
 import random
 import argparse
 import tkinter as tk
@@ -19,8 +18,8 @@ class Direction(IntEnum):
 @dataclass(frozen=True, slots=True)
 class Step:
     direction: Direction  # up (0), down (1), left (2), right (3)
-    moves: int            # amount to shift (toroidal)
-    pivot: int            # row index (LEFT/RIGHT) or column index (UP/DOWN)
+    moves: int  # amount to shift (toroidal)
+    pivot: int  # row index (LEFT/RIGHT) or column index (UP/DOWN)
 
 
 @dataclass(frozen=True, slots=True)
@@ -41,10 +40,19 @@ def load_image_tk(image_path: str) -> LoadedImage:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Erebus sequence generator")
+    parser = argparse.ArgumentParser(description="Erebus image cipher/decipher")
     parser.add_argument("image_path", type=Path, help="Path to the image")
     parser.add_argument("seed", type=int, help="Random seed")
-    parser.add_argument("iterations", type=int, help="Number of steps to generate")
+    parser.add_argument(
+        "iterations", type=int, help="Number of steps to generate/apply"
+    )
+    parser.add_argument(
+        "-m",
+        "--mode",
+        choices=["cipher", "decipher"],
+        default="cipher",
+        help="Operation to perform (default: cipher)",
+    )
     args = parser.parse_args()
     if args.iterations < 1:
         parser.error("iterations must be a positive integer")
@@ -144,9 +152,58 @@ def move_column(im: LoadedImage, direction: Direction, pivot: int, moves: int):
         img.put(_to_color_string(color), (x, y))
 
 
+def inverse_direction(direction: Direction) -> Direction:
+    if direction == Direction.LEFT:
+        return Direction.RIGHT
+    if direction == Direction.RIGHT:
+        return Direction.LEFT
+    if direction == Direction.UP:
+        return Direction.DOWN
+    if direction == Direction.DOWN:
+        return Direction.UP
+    raise ValueError(f"Unsupported direction: {direction}")
+
+
+def apply_step(im: LoadedImage, step: Step) -> None:
+    if step.direction in (Direction.LEFT, Direction.RIGHT):
+        move_row(im, step.direction, step.pivot, step.moves)
+    elif step.direction in (Direction.UP, Direction.DOWN):
+        move_column(im, step.direction, step.pivot, step.moves)
+    else:
+        raise ValueError(f"Unsupported direction: {step.direction}")
+
+
+def cipher(
+    im: LoadedImage, seed: int, iterations: int, pivot: int | None = None
+) -> None:
+    rng = random.Random(seed)
+    sequence = generate_sequence(
+        rng, iterations, im.image.width(), im.image.height(), pivot
+    )
+    for step in sequence:
+        apply_step(im, step)
+
+
+def decipher(
+    im: LoadedImage, seed: int, iterations: int, pivot: int | None = None
+) -> None:
+    rng = random.Random(seed)
+    sequence = generate_sequence(
+        rng, iterations, im.image.width(), im.image.height(), pivot
+    )
+    for step in reversed(sequence):
+        inv = Step(
+            direction=inverse_direction(step.direction),
+            moves=step.moves,
+            pivot=step.pivot,
+        )
+        apply_step(im, inv)
+
+
 def main() -> None:
     args = parse_args()
     print("EREBUS")
+    print(f"Mode: {args.mode}")
     print(f"Key: {args.seed}")
     print(f"Number of iterations: {args.iterations}")
 
@@ -157,26 +214,25 @@ def main() -> None:
         sys.exit(1)
     else:
         print(f"Image size: {loaded.image.width()}x{loaded.image.height()}")
-        rng = random.Random(args.seed)
-        sequence = generate_sequence(
-            rng, args.iterations, loaded.image.width(), loaded.image.height()
-        )
+        if args.mode == "cipher":
+            cipher(loaded, args.seed, args.iterations)
+        else:
+            decipher(loaded, args.seed, args.iterations)
 
-        # Apply sequence to the image
-        for step in sequence:
-            if step.direction in (Direction.LEFT, Direction.RIGHT):
-                move_row(loaded, step.direction, step.pivot, step.moves)
-            elif step.direction in (Direction.UP, Direction.DOWN):
-                move_column(loaded, step.direction, step.pivot, step.moves)
-            else:
-                raise ValueError(f"Unsupported direction: {step.direction}")
-
-        # Save output image next to input with epoch-based timestamp
-        timestamp = int(time.time() * 1000)
-        out_filename = f"{args.image_path.stem}_{timestamp}.png"
+        # Save output image next to input with c-/d- prefix
+        prefix = "c-" if args.mode == "cipher" else "d-"
+        orig_ext = args.image_path.suffix.lower()
+        ext_no_dot = orig_ext[1:] if orig_ext.startswith(".") else orig_ext
+        supported = {"png", "gif", "ppm", "pgm"}
+        if ext_no_dot in supported and orig_ext:
+            out_filename = f"{prefix}{args.image_path.name}"
+            out_format = ext_no_dot
+        else:
+            out_filename = f"{prefix}{args.image_path.stem}.png"
+            out_format = "png"
         out_path = args.image_path.with_name(out_filename)
         try:
-            loaded.image.write(str(out_path), format="png")
+            loaded.image.write(str(out_path), format=out_format)
             print(f"Wrote output to: {out_path}")
         except Exception as e:
             print(f"Failed to write output image: {e}", file=sys.stderr)
