@@ -62,18 +62,27 @@ def print_gradient(lines, start=(255, 0, 128), end=(0, 255, 255)):
     print("".join(out), end="")
 
 
-print_gradient(ascii_logo)
-for b in [
-    zero_percent,
-    ten_percent,
-    twenty_percent,
-    thirty_percent,
-    forty_percent,
-    fifty_percent,
-    sixty_percent,
-    seventy_percent,
-    eighty_percent,
-    ninety_percent,
-    hundred_percent,
-]:
-    print_gradient(b)
+def print_logo(start=(255, 0, 128), end=(0, 255, 255)) -> None:
+    print_gradient(ascii_logo, start=start, end=end)
+
+
+def _demo() -> None:
+    print_gradient(ascii_logo)
+    for b in [
+        zero_percent,
+        ten_percent,
+        twenty_percent,
+        thirty_percent,
+        forty_percent,
+        fifty_percent,
+        sixty_percent,
+        seventy_percent,
+        eighty_percent,
+        ninety_percent,
+        hundred_percent,
+    ]:
+        print_gradient(b)
+
+
+if __name__ == "__main__":
+    _demo()

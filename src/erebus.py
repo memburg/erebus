@@ -6,6 +6,7 @@ import tkinter as tk
 from enum import IntEnum
 from pathlib import Path
 from dataclasses import dataclass
+from ascii import print_logo
 
 
 class Direction(IntEnum):
@@ -202,10 +203,7 @@ def decipher(
 
 def main() -> None:
     args = parse_args()
-    print("EREBUS")
-    print(f"Mode: {args.mode}")
-    print(f"Key: {args.seed}")
-    print(f"Number of iterations: {args.iterations}")
+    print_logo()
 
     try:
         loaded = load_image_tk(args.image_path)
