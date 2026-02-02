@@ -32,6 +32,8 @@ Notes:
 
 ## Iterations
 
+These grids summarize the effect of increasing the step budget across images. Iteration counts are size-normalized: `1w` means width steps, `1h` means height steps; hence `1w + 1h` equals width plus height steps, and `2w + 2h` is approximately one perimeter-length budget. This normalization enables direct comparison across images; equal formulas (e.g., `2w + 1h`) indicate comparable mixing effort for images of the same dimensions, while the visible outcome remains content-dependent.
+ 
 ### female.png
 
 | Original               | 1w or 1h                             | 1w + 1h                              | 2w + 1h                              | 2w + 2h                              |
@@ -99,7 +101,9 @@ Memory: 2270MiB / 16384MiB
 
 ## Vision LLMs test
 
-This is a simple test, which is not expected to return anything significant; this is clearly not a human based test, therefore the results should not mean a human might not be able to recognize an ciphered image (specifically female.png).
+A minimal, model-only evaluation was conducted using female.png, with no expectation of significant findings. Because this is not a human-subjects assessment, the outcomes should not be interpreted as evidence that humans cannot recognize a ciphered (encrypted) image.
+
+The prompt below was provided to multiple LLMs:
 
 ```
 You are an expert visual analyst.
@@ -161,7 +165,13 @@ The image depicts a bright, open-air scene dominated by a large, white, rectangu
 
 ## Conclusion
 
+Erebus demonstrates that a seed and iteration-parameterized sequence of toroidal row/column rotations is sufficient to produce visually non-trivial permutations while remaining exactly reversible. In practice, this enables casual concealment of images: given knowledge of the seed (key) and the iteration count, the original can be recovered deterministically without loss.
+
+From a security standpoint, exhaustive search over plausible seeds and iteration counts can be computationally demanding when the key space is large and iteration budgets are high, which provides some resistance to naive brute-force attempts. Nonetheless, Erebus is a permutation-only cipher, not modern cryptographic encryption. It preserves pixel values and associated statistics, and it offers no formal security guarantees under standard adversarial models; it should not be used to protect sensitive data.
+
+Operationally, the method is lightweight and easy to use: a single command reproduces or inverts a transform on any supported image, and size-normalized iteration budgets facilitate comparable mixing across resolutions. This combination of determinism, reproducibility, and simplicity makes Erebus suitable for pedagogical demonstrations, procedurally generated art, and low-stakes obfuscation scenarios where cryptographic assurances are not required.
+
 ## References
 
 1. [Lenna](https://en.wikipedia.org/wiki/Lenna)
-2. https://sipi.usc.edu/database/
+2. [SIPI Image Database](https://sipi.usc.edu/database/)
