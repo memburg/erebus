@@ -5,8 +5,9 @@ import tkinter as tk
 
 from enum import IntEnum
 from pathlib import Path
-from dataclasses import dataclass
+
 from ascii import print_logo
+from dataclasses import dataclass
 
 
 class Direction(IntEnum):
