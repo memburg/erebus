@@ -22,6 +22,30 @@ def _make_bar_line(pct: int, width: int = 44) -> str:
     return "█" * filled + "░" * (width - filled) + _bar_label(pct) + "\n"
 
 
+def render_progress_bar(current: int, total: int, width: int = 44) -> str:
+    if total <= 0:
+        total = 1
+
+    if current < 0:
+        current = 0
+    if current > total:
+        current = total
+
+    pct = int(round(current * 100.0 / total))
+    filled = int(round(width * current / total))
+    if filled < 0:
+        filled = 0
+    if filled > width:
+        filled = width
+
+    return (
+        "█" * filled
+        + "░" * (width - filled)
+        + _bar_label(pct)
+        + f" {current}/{total}"
+    )
+
+
 zero_percent = [_make_bar_line(0)]
 ten_percent = [_make_bar_line(10)]
 twenty_percent = [_make_bar_line(20)]

@@ -99,6 +99,12 @@ GPU: Apple M4
 Memory: 2270MiB / 16384MiB
 ```
 
+## Video encryption
+
+| Original                 | Encrypted                     |
+| ------------------------ | ----------------------------- |
+| ![](./assets/mickey.mp4) | ![](./assets/reassembled.mp4) |
+
 ## Vision LLMs test
 
 A minimal, model-only evaluation was conducted using female.png, with no expectation of significant findings. Because this is not a human-subjects assessment, the outcomes should not be interpreted as evidence that humans cannot recognize a ciphered (encrypted) image.

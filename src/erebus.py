@@ -6,8 +6,18 @@ import tkinter as tk
 from enum import IntEnum
 from pathlib import Path
 
-from ascii import print_logo
 from dataclasses import dataclass
+
+from ascii import print_logo, render_progress_bar
+
+
+SUPPORTED_FORMATS = {"png", "gif", "ppm", "pgm"}
+MODE_ALIASES = {
+    "cipher": "cipher",
+    "encrypt": "cipher",
+    "decipher": "decipher",
+    "decrypt": "decipher",
+}
 
 
 class Direction(IntEnum):
@@ -30,7 +40,29 @@ class LoadedImage:
     image: "tk.PhotoImage"
 
 
-def load_image_tk(image_path: str) -> LoadedImage:
+@dataclass(frozen=True, slots=True)
+class CliConfig:
+    target_path: Path
+    seed: int
+    iterations: int
+    mode: str
+
+
+@dataclass(frozen=True, slots=True)
+class ProcessResult:
+    source: Path
+    output: Path
+    width: int
+    height: int
+
+
+@dataclass(frozen=True, slots=True)
+class ProcessFailure:
+    source: Path
+    error: str
+
+
+def load_image_tk(image_path: str | Path) -> LoadedImage:
     root = tk.Tk()
     root.withdraw()
     try:
@@ -41,9 +73,16 @@ def load_image_tk(image_path: str) -> LoadedImage:
     return LoadedImage(root=root, image=img)
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Erebus image cipher/decipher")
-    parser.add_argument("image_path", type=Path, help="Path to the image")
+def normalize_mode(mode: str) -> str:
+    normalized = MODE_ALIASES.get(mode.strip().lower())
+    if normalized is None:
+        raise ValueError(f"Unsupported mode: {mode}")
+    return normalized
+
+
+def parse_args() -> CliConfig:
+    parser = argparse.ArgumentParser(description="Erebus image encrypt/decrypt CLI")
+    parser.add_argument("image_path", type=Path, help="Path to an image or folder")
     parser.add_argument("seed", type=int, help="Random seed")
     parser.add_argument(
         "iterations", type=int, help="Number of steps to generate/apply"
@@ -51,14 +90,72 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-m",
         "--mode",
-        choices=["cipher", "decipher"],
+        choices=sorted(MODE_ALIASES),
         default="cipher",
-        help="Operation to perform (default: cipher)",
+        type=str.lower,
+        help="Operation to perform (default: encrypt; cipher/decipher also accepted)",
     )
     args = parser.parse_args()
     if args.iterations < 1:
         parser.error("iterations must be a positive integer")
-    return args
+    return CliConfig(
+        target_path=args.image_path,
+        seed=args.seed,
+        iterations=args.iterations,
+        mode=normalize_mode(args.mode),
+    )
+
+
+def prompt_for_existing_path() -> Path:
+    while True:
+        raw = input("Image or folder path: ").strip()
+        if not raw:
+            print("Please enter a file or folder path.")
+            continue
+        candidate = Path(raw).expanduser()
+        if candidate.exists():
+            return candidate
+        print(f"Path does not exist: {candidate}")
+
+
+def prompt_for_int(prompt: str, minimum: int | None = None) -> int:
+    while True:
+        raw = input(prompt).strip()
+        try:
+            value = int(raw)
+        except ValueError:
+            print("Please enter a valid integer.")
+            continue
+
+        if minimum is not None and value < minimum:
+            print(f"Value must be at least {minimum}.")
+            continue
+        return value
+
+
+def prompt_for_mode() -> str:
+    while True:
+        raw = input("Mode [encrypt/decrypt] (default: encrypt): ").strip()
+        if not raw:
+            return "cipher"
+        try:
+            return normalize_mode(raw)
+        except ValueError:
+            print("Please choose encrypt or decrypt.")
+
+
+def prompt_for_config() -> CliConfig:
+    print("Interactive mode")
+    target_path = prompt_for_existing_path()
+    mode = prompt_for_mode()
+    iterations = prompt_for_int("Iterations: ", minimum=1)
+    seed = prompt_for_int("Seed: ")
+    return CliConfig(
+        target_path=target_path,
+        seed=seed,
+        iterations=iterations,
+        mode=mode,
+    )
 
 
 def generate_sequence(
@@ -202,41 +299,153 @@ def decipher(
         apply_step(im, inv)
 
 
-def main() -> None:
-    args = parse_args()
-    print_logo()
+def output_prefix(mode: str) -> str:
+    return "c-" if mode == "cipher" else "d-"
 
-    try:
-        loaded = load_image_tk(args.image_path)
-    except ValueError as e:
-        print(e, file=sys.stderr)
-        sys.exit(1)
+
+def build_output_path(image_path: Path, mode: str) -> tuple[Path, str]:
+    prefix = output_prefix(mode)
+    orig_ext = image_path.suffix.lower()
+    ext_no_dot = orig_ext[1:] if orig_ext.startswith(".") else orig_ext
+    if ext_no_dot in SUPPORTED_FORMATS and orig_ext:
+        out_filename = f"{prefix}{image_path.name}"
+        out_format = ext_no_dot
     else:
-        print(f"Image size: {loaded.image.width()}x{loaded.image.height()}")
-        if args.mode == "cipher":
-            cipher(loaded, args.seed, args.iterations)
-        else:
-            decipher(loaded, args.seed, args.iterations)
+        out_filename = f"{prefix}{image_path.stem}.png"
+        out_format = "png"
+    return image_path.with_name(out_filename), out_format
 
-        # Save output image next to input with c-/d- prefix
-        prefix = "c-" if args.mode == "cipher" else "d-"
-        orig_ext = args.image_path.suffix.lower()
-        ext_no_dot = orig_ext[1:] if orig_ext.startswith(".") else orig_ext
-        supported = {"png", "gif", "ppm", "pgm"}
-        if ext_no_dot in supported and orig_ext:
-            out_filename = f"{prefix}{args.image_path.name}"
-            out_format = ext_no_dot
+
+def iter_supported_images(folder_path: Path) -> list[Path]:
+    return sorted(
+        [
+            path
+            for path in folder_path.iterdir()
+            if path.is_file() and path.suffix.lower().lstrip(".") in SUPPORTED_FORMATS
+        ],
+        key=lambda path: path.name.lower(),
+    )
+
+
+def process_image_path(
+    image_path: Path,
+    mode: str,
+    seed: int,
+    iterations: int,
+    *,
+    show_size: bool = False,
+) -> ProcessResult:
+    loaded = load_image_tk(image_path)
+    try:
+        width = loaded.image.width()
+        height = loaded.image.height()
+        if show_size:
+            print(f"Image size: {width}x{height}")
+
+        if mode == "cipher":
+            cipher(loaded, seed, iterations)
         else:
-            out_filename = f"{prefix}{args.image_path.stem}.png"
-            out_format = "png"
-        out_path = args.image_path.with_name(out_filename)
+            decipher(loaded, seed, iterations)
+
+        out_path, out_format = build_output_path(image_path, mode)
         try:
             loaded.image.write(str(out_path), format=out_format)
-            print(f"Wrote output to: {out_path}")
         except Exception as e:
-            print(f"Failed to write output image: {e}", file=sys.stderr)
-
+            raise ValueError(f"Failed to write output image: {e}") from e
+        return ProcessResult(
+            source=image_path,
+            output=out_path,
+            width=width,
+            height=height,
+        )
+    finally:
         loaded.root.destroy()
+
+
+def update_progress(current: int, total: int) -> None:
+    sys.stdout.write("\r" + render_progress_bar(current, total))
+    sys.stdout.flush()
+
+
+def process_single_target(config: CliConfig) -> int:
+    try:
+        result = process_image_path(
+            config.target_path,
+            config.mode,
+            config.seed,
+            config.iterations,
+            show_size=True,
+        )
+    except Exception as e:
+        print(e, file=sys.stderr)
+        return 1
+
+    print(f"Wrote output to: {result.output}")
+    return 0
+
+
+def process_folder_target(config: CliConfig) -> int:
+    image_paths = iter_supported_images(config.target_path)
+    if not image_paths:
+        print(
+            f"No supported image files found in: {config.target_path}",
+            file=sys.stderr,
+        )
+        return 1
+
+    failures: list[ProcessFailure] = []
+    total = len(image_paths)
+    successes = 0
+
+    print(f"Processing folder: {config.target_path}")
+    update_progress(0, total)
+    for index, image_path in enumerate(image_paths, start=1):
+        try:
+            process_image_path(
+                image_path,
+                config.mode,
+                config.seed,
+                config.iterations,
+            )
+            successes += 1
+        except Exception as e:
+            failures.append(ProcessFailure(source=image_path, error=str(e)))
+        update_progress(index, total)
+
+    print()
+    print(
+        f"Folder summary: {successes} succeeded, {len(failures)} failed, {total} total"
+    )
+    if failures:
+        print("Failures:")
+        for failure in failures:
+            print(f"- {failure.source.name}: {failure.error}")
+    return 0 if not failures else 1
+
+
+def run(config: CliConfig) -> int:
+    if config.target_path.is_file():
+        return process_single_target(config)
+    if config.target_path.is_dir():
+        return process_folder_target(config)
+
+    print(f"Path does not exist: {config.target_path}", file=sys.stderr)
+    return 1
+
+
+def main() -> None:
+    try:
+        if len(sys.argv) == 1:
+            print_logo()
+            config = prompt_for_config()
+        else:
+            config = parse_args()
+            print_logo()
+    except (EOFError, KeyboardInterrupt):
+        print(file=sys.stderr)
+        sys.exit(1)
+
+    sys.exit(run(config))
 
 
 if __name__ == "__main__":
