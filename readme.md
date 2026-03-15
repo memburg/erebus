@@ -101,9 +101,29 @@ Memory: 2270MiB / 16384MiB
 
 ## Video encryption
 
-| Original                 | Encrypted                     |
-| ------------------------ | ----------------------------- |
-| ![](./assets/mickey.mp4) | ![](./assets/reassembled.mp4) |
+Video encryption is possible as well, not directly using Erebus but using a tool like `ffmpeg`.
+
+Splitting the original video into frames, then encrypting the frames and reassembling them using the same frame rate as the original video.
+
+| Original                   | Encrypted                     |
+| -------------------------- | ----------------------------- |
+| ![](./assets/original.gif) | ![](./assets/reassembled.gif) |
+
+> [!NOTE]
+> I do not own the rights to the above video; it was made for educational purposes.
+
+### Helpful commands
+
+```bash
+# extract every original frame
+mkdir -p frames && ffmpeg -i "input.mp4" -vsync 0 "frames/frame_%06d.png"
+
+# rebuild the video (no audio)
+ffmpeg -framerate "$(ffprobe -v error -select_streams v:0 -show_entries stream=avg_frame_rate -of csv=p=0 "input.mp4")" -start_number 1 -i "frames/frame_%06d.png" -c:v libx264 -pix_fmt yuv420p "reassembled.mp4"
+```
+
+> [!NOTE]
+> The video were converted into GIFs to be rendered by the markdown interpreter.
 
 ## Vision LLMs test
 
