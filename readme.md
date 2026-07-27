@@ -20,15 +20,15 @@ Erebus is an experiment in pixel permutation using only simple wrap-around shift
 
 ## Usage
 
-- Requirements: Python 3.9+ with Tkinter (PhotoImage). Verify with `python3 -c "import tkinter; print('ok')"`.
-- CLI: `python3 src/erebus.py <image_path> <seed> <iterations>`
-- Example: `python3 src/erebus.py assets/lenna.png 42 1500 -m=cipher`
-- Output: writes `<image_stem>_<epoch_ms>.png` next to the input image
-- Help: `python3 src/erebus.py -h`
+- Requirements: JRuby.
+- CLI: `jruby src/erebus.rb <image_path> <seed> <iterations>`
+- Example: `jruby src/erebus.rb assets/lenna.png 42 1500 -m=cipher`
+- Output: writes `c-<image_name>` or `d-<image_name>` next to the input image.
+- Help: `jruby src/erebus.rb -h`
 
 Notes:
 - Only pixel positions change; running with the same seed and iterations reproduces the same arrangement for a given image size.
-- Tk PhotoImage natively supports PNG/GIF/PPM/PGM; convert other formats to PNG before use.
+- Java ImageIO natively supports PNG, GIF, JPEG, BMP, and WBMP.
 
 ## Iterations
 
@@ -54,7 +54,7 @@ These grids summarize the effect of increasing the step budget across images. It
 
 ## Performance
 
-Performance depends on CPU, memory bandwidth, and Python/Tk build, so times vary by system; however, concrete numbers help set expectations. Each step rotates a single row or column, so runtime scales approximately with iterations × (width + height). The table below reports average timings from a reference system (specs included) as an indicative baseline; results on other systems may differ.
+Performance depends on CPU, memory bandwidth, and the JVM, so times vary by system; however, concrete numbers help set expectations. Each step rotates a single row or column, so runtime scales approximately with iterations × (width + height). The table below reports historical timings from the Python version; results on JRuby will differ.
 
 ### 1w or 1h
 
