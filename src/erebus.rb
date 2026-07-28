@@ -22,12 +22,11 @@ def normalize_mode(mode)
   MODE_ALIASES.fetch(mode.strip.downcase.delete_prefix("=")) { raise ArgumentError, "Unsupported mode: #{mode}" }
 end
 
-def generate_sequence(rng, iterations, width, height, pivot = nil)
+def generate_sequence(rng, iterations, width, height)
   Array.new(iterations) do
     direction = rng.rand(4)
     max_moves, pivot_size = direction <= DOWN ? [height, width] : [width, height]
-    step_pivot = pivot ? pivot % pivot_size : rng.rand(pivot_size)
-    [direction, rng.rand(1..max_moves), step_pivot]
+    [direction, rng.rand(1..max_moves), rng.rand(pivot_size)]
   end
 end
 
@@ -49,14 +48,14 @@ def apply_step(image, step)
   end
 end
 
-def cipher(image, seed, iterations, pivot = nil)
-  generate_sequence(Random.new(seed), iterations, image.width, image.height, pivot).each do |step|
+def cipher(image, seed, iterations)
+  generate_sequence(Random.new(seed), iterations, image.width, image.height).each do |step|
     apply_step(image, step)
   end
 end
 
-def decipher(image, seed, iterations, pivot = nil)
-  generate_sequence(Random.new(seed), iterations, image.width, image.height, pivot).reverse_each do |step|
+def decipher(image, seed, iterations)
+  generate_sequence(Random.new(seed), iterations, image.width, image.height).reverse_each do |step|
     apply_step(image, [[DOWN, UP, RIGHT, LEFT][step[0]], step[1], step[2]])
   end
 end
