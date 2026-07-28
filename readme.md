@@ -21,10 +21,32 @@ Erebus is an experiment in pixel permutation using only simple wrap-around shift
 ## Usage
 
 - Requirements: JRuby.
-- CLI: `jruby src/erebus.rb <image_path> <seed> <iterations>`
-- Example: `jruby src/erebus.rb assets/lenna.png 42 1500 -m=cipher`
-- Output: writes `c-<image_name>` or `d-<image_name>` next to the input image.
+- CLI: `jruby src/erebus.rb <image_or_folder> <seed> <iterations>`
 - Help: `jruby src/erebus.rb -h`
+
+### Single image
+
+```bash
+# Cipher (default)
+jruby src/erebus.rb assets/lenna.png 42 1500
+# Output: assets/c-lenna.png
+
+# Decipher
+jruby src/erebus.rb assets/c-lenna.png 42 1500 -m=decipher
+# Output: assets/d-c-lenna.png
+```
+
+### Bulk (folder)
+
+```bash
+# Cipher a folder of images
+jruby src/erebus.rb my-folder 42 1500
+# Output: written to my-folder-output/ (sibling directory, e.g. my-folder-output/c-cat.png)
+
+# Decipher
+jruby src/erebus.rb my-folder 42 1500 -m=decipher
+# Output: written to my-folder-output/ (e.g. my-folder-output/d-c-cat.png)
+```
 
 Notes:
 - Only pixel positions change; running with the same seed and iterations reproduces the same arrangement for a given image size.

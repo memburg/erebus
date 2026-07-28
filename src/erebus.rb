@@ -60,20 +60,20 @@ def decipher(image, seed, iterations)
   end
 end
 
-def output_path(path, mode)
+def output_path(path, mode, output_base = nil)
   extension = path.extname.downcase.delete_prefix(".")
   extension = "png" unless SUPPORTED_FORMATS.include?(extension)
   name = "#{mode == "cipher" ? "c" : "d"}-#{path.basename(path.extname)}.#{extension}"
-  [path.dirname.join(name), extension]
+  [(output_base || path.dirname).join(name), extension]
 end
 
-def process_image(path, mode, seed, iterations, show_size: false)
+def process_image(path, mode, seed, iterations, output_base: nil, show_size: false)
   image = ImageIO.read(java.io.File.new(path.to_s))
   raise "Failed to load image: #{path}" unless image
 
   puts "Image size: #{image.width}x#{image.height}" if show_size
   mode == "cipher" ? cipher(image, seed, iterations) : decipher(image, seed, iterations)
-  destination, format = output_path(path, mode)
+  destination, format = output_path(path, mode, output_base)
   raise "Failed to write output image: #{destination}" unless ImageIO.write(image, format, java.io.File.new(destination.to_s))
 
   destination
@@ -103,13 +103,16 @@ def run(config)
     return 1
   end
 
+  output_dir = Pathname.new("#{path}-output")
+  Dir.mkdir(output_dir) unless output_dir.exist?
   puts "Processing folder: #{path}"
+  puts "Output directory: #{output_dir}"
   failures = []
   # ponytail: Plain counts preserve progress without keeping the ASCII-art module.
   print "\r0/#{images.length}"
   $stdout.flush
   images.each_with_index do |image, index|
-    process_image(image, config[:mode], config[:seed], config[:iterations])
+    process_image(image, config[:mode], config[:seed], config[:iterations], output_base: output_dir)
   rescue StandardError => e
     failures << [image, e.message]
   ensure
